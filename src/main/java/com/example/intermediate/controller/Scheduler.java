@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 @Component
 public class Scheduler {
-
     private  final PostRepository postRepository;
 
     @Scheduled(cron = "0 0/1 * * * *")
@@ -26,7 +25,6 @@ public class Scheduler {
         System.out.println("댓글 없는 게시글 삭제 실행");
 
         List<Post> postList = postRepository.findAll();
-
         if (postList.size() != 0) {
             for (Post post : postList) {
                 // 1초마다 한 게시글 조회
