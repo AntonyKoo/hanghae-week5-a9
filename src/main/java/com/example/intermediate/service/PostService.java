@@ -140,7 +140,7 @@ public class PostService {
 
   // 게시글 업데이트
   @Transactional
-  public ResponseDto<Post> updatePost(Long id, PostRequestDto requestDto, HttpServletRequest request) {
+  public ResponseDto<PostResponseDto> updatePost(Long id, PostRequestDto requestDto, HttpServletRequest request) {
     if (null == request.getHeader("Refresh-Token")) {
       return ResponseDto.fail("MEMBER_NOT_FOUND",
           "로그인이 필요합니다.");
@@ -166,7 +166,17 @@ public class PostService {
     }
 
     post.update(requestDto);
-    return ResponseDto.success(post);
+    return ResponseDto.success(
+            PostResponseDto.builder()
+                    .id(post.getId())
+                    .title(post.getTitle())
+                    .content(post.getContent())
+                    .image(post.getImage())
+                    .author(post.getMember().getNickname())
+                    .createdAt(post.getCreatedAt())
+                    .modifiedAt(post.getModifiedAt())
+                    .build()
+    );
   }
 
   @Transactional
