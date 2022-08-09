@@ -9,8 +9,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableJpaAuditing
 @SpringBootApplication
 public class IntermediateApplication {
-  public static void main(String[] args) {
-    SpringApplication.run(IntermediateApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(IntermediateApplication.class, args);
+    }
 
 }
