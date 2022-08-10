@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,17 +29,23 @@ public class Member extends Timestamped {
   private String nickname;
 
   @Column(nullable = false)
-  @JsonIgnore
   private String password;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
   private List<Post> postList;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
   private List<Comment> commentList;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
   private List<ReComment> reCommentList;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+  private List<Likes> likesList;
 
   @Override
   public boolean equals(Object o) {

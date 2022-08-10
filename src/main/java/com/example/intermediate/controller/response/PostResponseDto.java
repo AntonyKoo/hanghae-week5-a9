@@ -17,7 +17,6 @@ public class PostResponseDto {
   private Long id;
   private String title;  // 글 제목
   private String author;  // 작성자
-
   private String content;  // 게시글 내용
   private String image;  // 게시글에 등록된 이미지 url
   private List<CommentResponseDto> commentResponseDtoList;  // 게시글에 등록된 댓글 리스트
