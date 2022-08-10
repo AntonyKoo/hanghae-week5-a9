@@ -16,6 +16,7 @@ public class ReCommentResponseDto {
         private Long id;
         private String author;
         private String content;
+        private Long recommentHeart;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
 
@@ -23,6 +24,7 @@ public class ReCommentResponseDto {
                 this.id = entity.getId();
                 this.author = entity.getMember().getNickname();
                 this.content = entity.getContent();
+                this.recommentHeart = entity.getRecommentLikesCount();
                 this.createdAt = entity.getCreatedAt();
                 this.modifiedAt = entity.getModifiedAt();
         }
