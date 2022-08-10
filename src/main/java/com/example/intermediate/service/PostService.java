@@ -63,6 +63,7 @@ public class PostService {
       return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
     }
     String imgurl = null;
+
     if (!multipartFile.isEmpty()) {
       String fileName = CommonUtils.buildFileName(multipartFile.getOriginalFilename());
       ObjectMetadata objectMetadata = new ObjectMetadata();
