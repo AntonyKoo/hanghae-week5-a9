@@ -88,6 +88,7 @@ public class ReCommentService {
                             .id(reComment.getId())
                             .author(reComment.getMember().getNickname())
                             .content(reComment.getContent())
+                            .recommentHeart(reComment.getRecommentLikesCount())
                             .createdAt(reComment.getCreatedAt())
                             .modifiedAt(reComment.getModifiedAt())
                             .build()

@@ -53,9 +53,11 @@ public class TokenProvider {
 
     Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
     String accessToken = Jwts.builder()
+//페이로드
         .setSubject(member.getNickname())
         .claim(AUTHORITIES_KEY, Authority.ROLE_MEMBER.toString())
         .setExpiration(accessTokenExpiresIn)
+//            시그니쳐
         .signWith(key, SignatureAlgorithm.HS256)
         .compact();
 

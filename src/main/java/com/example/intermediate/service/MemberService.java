@@ -1,16 +1,19 @@
 package com.example.intermediate.service;
 
-import com.example.intermediate.controller.response.MemberResponseDto;
-import com.example.intermediate.domain.Member;
+import com.example.intermediate.controller.response.*;
+import com.example.intermediate.domain.*;
 import com.example.intermediate.controller.request.LoginRequestDto;
 import com.example.intermediate.controller.request.MemberRequestDto;
-import com.example.intermediate.controller.response.ResponseDto;
 import com.example.intermediate.controller.request.TokenDto;
 import com.example.intermediate.jwt.TokenProvider;
-import com.example.intermediate.repository.MemberRepository;
+import com.example.intermediate.repository.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,11 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 public class MemberService {
+
+  private final PostRepository postRepository;
+  private final CommentRepository commentRepository;
+  private final ReCommentRepository reCommentRepository;
+  private final LikesRepository likesRepository;
 
   private final MemberRepository memberRepository;
 
@@ -131,4 +139,80 @@ public class MemberService {
     response.addHeader("Access-Token-Expire-Time", tokenDto.getAccessTokenExpiresIn().toString());
   }
 
+  @Transactional(readOnly = true)
+  public ResponseDto<?> mypage(HttpServletRequest request) {
+    if (null == request.getHeader("Refresh-Token")) {
+      return ResponseDto.fail("MEMBER_NOT_FOUND",
+              "로그인이 필요합니다.");
+    }
+
+    // 헤더에 Auth 토큰 있늬?
+    // Refresh와 Authorization 한 번에 할 수 없나?
+    if (null == request.getHeader("Authorization")) {
+      return ResponseDto.fail("MEMBER_NOT_FOUND",
+              "로그인이 필요합니다.");
+    }
+
+    // 위에서 토큰 확인 후, 이용자 검증 로직
+    Member member = validateMember(request);
+    if (null == member) {
+      return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
+    }
+
+    List<PostDetailResponseDto> formypostlist = new ArrayList<>();
+    List<Post> postlist = postRepository.findAllByMemberId(member.getId());
+    for (Post post :postlist){
+      formypostlist.add(new PostDetailResponseDto(post));
+    }
+
+    List<CommentResponseDto> formycommentlist = new ArrayList<>();
+    List<Comment> commentList = commentRepository.findAllByMemberId(member.getId());
+    for (Comment comment :commentList){
+      formycommentlist.add(new CommentResponseDto(comment));
+    }
+
+    List<ReCommentResponseDto> formyRecommentlist = new ArrayList<>();
+    List<ReComment> Recommentlist = reCommentRepository.findAllByMemberId(member.getId());
+    for (ReComment reComment :Recommentlist){
+      formyRecommentlist.add(new ReCommentResponseDto(reComment));
+    }
+
+    List<PostDetailResponseDto> forPostlike = new ArrayList<>();
+    List<CommentResponseDto> forcommentlike = new ArrayList<>();
+    List<ReCommentResponseDto> forrecomment = new ArrayList<>();
+    List<Likes> likesList = likesRepository.findAllByMemberId(member.getId());
+    for (Likes likess :likesList) {
+      if(likess.getComment()!=null){
+        Comment init = commentRepository.getReferenceById(likess.getComment().getId());
+        forcommentlike.add(new CommentResponseDto(init));
+      }
+      if(likess.getPost()!=null){
+        Post init = postRepository.getReferenceById(likess.getPost().getId());
+        forPostlike.add(new PostDetailResponseDto(init));
+      }
+      if(likess.getRecomment()!=null){
+        ReComment init = reCommentRepository.getReferenceById(likess.getRecomment().getId());
+        forrecomment.add(new ReCommentResponseDto(init));
+      }
+    }
+
+    return ResponseDto.success(
+            MypageResponseDto.builder()
+                    .postList(formypostlist)
+                    .commentList(formycommentlist)
+                    .reCommentList(formyRecommentlist)
+                    .LikeList(forPostlike)
+                    .LikeComment(forcommentlike)
+                    .LikeRecomment(forrecomment)
+                    .build()
+    );
+  }
+
+  @Transactional
+  public Member validateMember(HttpServletRequest request) {
+    if (!tokenProvider.validateToken(request.getHeader("Refresh-Token"))) {
+      return null;
+    }
+    return tokenProvider.getMemberFromAuthentication();
+  }
 }

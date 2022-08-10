@@ -1,9 +1,6 @@
 package com.example.intermediate.repository;
 
-import com.example.intermediate.domain.Comment;
-import com.example.intermediate.domain.Likes;
-import com.example.intermediate.domain.Member;
-import com.example.intermediate.domain.Post;
+import com.example.intermediate.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -19,4 +16,10 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
     Optional<Likes> findByCommentAndMember(Comment comment, Member member);
     List<Likes> findByCommentId(Long commentId);
     void deleteByCommentAndMember(Comment comment, Member member);
+
+    Optional<Likes> findByRecommentAndMember(ReComment reComment, Member member);
+    List<Likes> findByRecommentId(Long recommentId);
+    void deleteByRecommentAndMember(ReComment reComment, Member member);
+
+    List<Likes> findAllByMemberId(Long memberid);
 }

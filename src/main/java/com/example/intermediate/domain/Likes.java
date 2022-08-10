@@ -18,16 +18,20 @@ public class Likes {
     private Long id;
 
     @JoinColumn(name="member_id")
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     private Member member;
 
     @JoinColumn(name="post_id")
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     private Post post;
 
     @JoinColumn(name="comment_id")
-    @ManyToOne
+    @ManyToOne (fetch = FetchType.LAZY)
     private Comment comment;
+
+    @JoinColumn(name="recomment_id")
+    @ManyToOne (fetch = FetchType.LAZY)
+    private ReComment recomment;
 
 }
 

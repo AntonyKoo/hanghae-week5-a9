@@ -63,6 +63,7 @@ public class PostService {
       return ResponseDto.fail("INVALID_TOKEN", "Token이 유효하지 않습니다.");
     }
     String imgurl = null;
+
     if (!multipartFile.isEmpty()) {
       String fileName = CommonUtils.buildFileName(multipartFile.getOriginalFilename());
       ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -111,6 +112,7 @@ public class PostService {
               .id(comment.getId())
               .author(comment.getMember().getNickname())
               .content(comment.getContent())
+                  .commentLikesCount(comment.getCommentLikesCount())
               .reCommentResponseDtoList(reCommentRepository.findAllByCommentId(comment.getId()).stream().map(ReCommentResponseDto::new).collect(Collectors.toList()))
               .createdAt(comment.getCreatedAt())
               .modifiedAt(comment.getModifiedAt())
