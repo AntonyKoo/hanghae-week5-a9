@@ -5,11 +5,10 @@ import com.example.intermediate.controller.response.ResponseDto;
 import com.example.intermediate.service.PostService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,9 +18,10 @@ public class PostController {
 
   // 게시글 작성
   @RequestMapping(value = "/api/auth/post", method = RequestMethod.POST)
-  public ResponseDto<?> createPost(@RequestBody PostRequestDto requestDto,
-      HttpServletRequest request) {
-    return postService.createPost(requestDto, request);
+  public ResponseDto<?> createPost(@RequestPart(required = false,value = "file") MultipartFile multipartFile,
+                                   @RequestPart PostRequestDto postRequestDto,
+                                   HttpServletRequest request) throws IOException {
+    return postService.createPost(postRequestDto, request,multipartFile);
   }
 
   // 특정 게시글 조회  ** 댓글 & 대댓글 & count(좋아요) 같이 response
@@ -48,6 +48,12 @@ public class PostController {
   public ResponseDto<?> deletePost(@PathVariable Long id,
       HttpServletRequest request) {
     return postService.deletePost(id, request);
+  }
+
+  // 게시글 내 파일 수정
+  @RequestMapping(value = "/api/post/{id}", method = RequestMethod.PUT)
+  public ResponseDto<?> insertimg(@PathVariable Long id,@RequestPart(value = "file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+    return postService.insertimg(id,multipartFile,request);
   }
 
 }
