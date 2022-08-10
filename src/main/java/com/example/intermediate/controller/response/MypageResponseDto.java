@@ -20,4 +20,5 @@ public class MypageResponseDto {
     List<ReCommentResponseDto> reCommentList;
     List<PostDetailResponseDto> LikeList;
     List<CommentResponseDto> LikeComment;
+    List<ReCommentResponseDto> LikeRecomment;
 }

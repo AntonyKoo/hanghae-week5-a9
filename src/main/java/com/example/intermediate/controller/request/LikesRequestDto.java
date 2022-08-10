@@ -9,4 +9,5 @@ import lombok.Setter;
 public class LikesRequestDto {
     private Long postId;
     private Long commentId;
+    private Long recommendId;
 }

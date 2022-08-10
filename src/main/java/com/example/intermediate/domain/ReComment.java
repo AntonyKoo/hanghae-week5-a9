@@ -30,6 +30,9 @@ public class ReComment extends Timestamped {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
+    @Column
+    private Long recommentLikesCount;
+
     public void update(ReCommentRequestDto reCommentRequestDto) {
         this.content = reCommentRequestDto.getContent();
     }
@@ -38,4 +41,8 @@ public class ReComment extends Timestamped {
         return !this.member.equals(member);
     }
 
+    public void likesUpdate(Long likesCount){
+        this.recommentLikesCount = likesCount;
+        System.out.println("RecommentLikesCount: " + recommentLikesCount);
+    }
 }

@@ -112,6 +112,7 @@ public class PostService {
               .id(comment.getId())
               .author(comment.getMember().getNickname())
               .content(comment.getContent())
+                  .commentLikesCount(comment.getCommentLikesCount())
               .reCommentResponseDtoList(reCommentRepository.findAllByCommentId(comment.getId()).stream().map(ReCommentResponseDto::new).collect(Collectors.toList()))
               .createdAt(comment.getCreatedAt())
               .modifiedAt(comment.getModifiedAt())

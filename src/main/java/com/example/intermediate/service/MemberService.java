@@ -179,6 +179,7 @@ public class MemberService {
 
     List<PostDetailResponseDto> forPostlike = new ArrayList<>();
     List<CommentResponseDto> forcommentlike = new ArrayList<>();
+    List<ReCommentResponseDto> forrecomment = new ArrayList<>();
     List<Likes> likesList = likesRepository.findAllByMemberId(member.getId());
     for (Likes likess :likesList) {
       if(likess.getComment()!=null){
@@ -189,6 +190,10 @@ public class MemberService {
         Post init = postRepository.getReferenceById(likess.getPost().getId());
         forPostlike.add(new PostDetailResponseDto(init));
       }
+      if(likess.getRecomment()!=null){
+        ReComment init = reCommentRepository.getReferenceById(likess.getRecomment().getId());
+        forrecomment.add(new ReCommentResponseDto(init));
+      }
     }
 
     return ResponseDto.success(
@@ -198,6 +203,7 @@ public class MemberService {
                     .reCommentList(formyRecommentlist)
                     .LikeList(forPostlike)
                     .LikeComment(forcommentlike)
+                    .LikeRecomment(forrecomment)
                     .build()
     );
   }
