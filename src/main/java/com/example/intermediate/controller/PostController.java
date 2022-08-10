@@ -50,6 +50,7 @@ public class PostController {
     return postService.deletePost(id, request);
   }
 
+  // 게시글 내 파일 수정
   @RequestMapping(value = "/api/post/{id}", method = RequestMethod.PUT)
   public ResponseDto<?> insertimg(@PathVariable Long id,@RequestPart(value = "file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
     return postService.insertimg(id,multipartFile,request);

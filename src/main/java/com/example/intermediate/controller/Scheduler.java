@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 @Component
 public class Scheduler {
-
     private  final PostRepository postRepository;
 
     @Scheduled(cron = "0 0/1 * * * *")

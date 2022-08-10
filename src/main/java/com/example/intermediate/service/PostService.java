@@ -118,14 +118,16 @@ public class PostService {
       );
     }
 
-    return ResponseDto.success(
+    return ResponseDto.success( // 댓글수, 대댓글 수, 게시글의 좋아요 수
         PostResponseDto.builder()
             .id(post.getId())
             .title(post.getTitle())
             .content(post.getContent())
-                .image(post.getImage())
+            .image(post.getImage())
             .commentResponseDtoList(commentResponseDtoList)
             .author(post.getMember().getNickname())
+            .postLikesCount(post.getPostLikesCount())  // 좋아요 수
+            .commentsCount((long) post.getComments().size())  // 댓글수
             .createdAt(post.getCreatedAt())
             .modifiedAt(post.getModifiedAt())
             .build()
