@@ -26,23 +26,19 @@ public class Scheduler {
         System.out.println("댓글 없는 게시글 삭제 실행");
 
         List<Post> postList = postRepository.findAll();
-        List<Long> deleteList = new ArrayList<>();
 
         if (postList.size() != 0) {
             for (Post post : postList) {
                 // 1초마다 한 게시글 조회
                 TimeUnit.SECONDS.sleep(1);
                 // i 번째 게시글 꺼냄
-                Post p = post;
                 // i 번째 게시글을 대상으로 댓글 유무 확인
-                List<Comment> commentList = p.getComments();
+                List<Comment> commentList = post.getComments();
                 if (commentList.size() == 0) {
-                    postRepository.delete(p);
+                    postRepository.delete(post);
+                    System.out.println("게시글"+post.getId()+"에 댓글이 존재하지 않아 삭제 처리 되었습니다.");
                 }
-                deleteList.add(p.getId());
             }
-            Long deletedId = deleteList.get(0);
-            System.out.println("게시글"+deletedId+"에 댓글이 존재하지 않아 삭제 처리 되었습니다.");
         }
     }
 }
