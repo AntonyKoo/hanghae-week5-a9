@@ -37,6 +37,15 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+    # properties 설정 파일 쓰기
+    - name: make application-dev.properties
+      if: contains(github.ref, 'develop')
+      run: |
+        cd ./src/main/resources
+        touch ./application-dev.properties
+        echo "${{ secrets.PROPERTIES_DEV }}" > ./application-dev.properties
+      shell: bash
+      
     # Gradle build
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
