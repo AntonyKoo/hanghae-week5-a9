@@ -18,6 +18,7 @@ env:
   S3_BUCKET_NAME: junior-test-bucket
   CODE_DEPLOY_APPLICATION_NAME: hanghae-week5-a9-auto-deploy
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: hanghae-week5-a9
+  RESOURCE_PATH: ./src/main/resources/application.yaml
   
 
 permissions:
@@ -38,15 +39,16 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+    
     # properties 설정 파일 쓰기
-    - name: make application-dev.properties
-      if: contains(github.ref, 'develop')
-      run: |
-        cd ./src/main/resources
-        touch ./application-dev.properties
-        echo "${{ secrets.PROPERTIES_DEV }}" > ./application-dev.properties
-      shell: bash
-      
+    - name: Generate Environment Variables File for Properties
+      uses: microsoft/variable-substitution@v1
+      with:
+       files: ${{ env.RESOURCE_PATH }}
+      env:
+       cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS_KEY_ID }}
+       cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    
     
     # 권한 재설정
     - name: Run chmod to make gradlew executable
