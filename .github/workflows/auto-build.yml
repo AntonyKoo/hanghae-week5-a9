@@ -18,6 +18,7 @@ env:
   S3_BUCKET_NAME: junior-test-bucket
   CODE_DEPLOY_APPLICATION_NAME: hanghae-week5-a9-auto-deploy
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: hanghae-week5-a9
+  
 
 permissions:
   contents: read
@@ -28,6 +29,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    # 권한 재설정
+    - name: Run chmod to make gradlew executable
+      run: chmod +x ./gradlew
     # 브랜치 체크아웃
     - name: Checkout 
       uses: actions/checkout@v3
