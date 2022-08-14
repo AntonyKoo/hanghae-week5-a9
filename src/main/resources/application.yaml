@@ -9,8 +9,8 @@ cloud:
     s3:
       bucket: junior-test-bucket
     credentials:
-      accessKey: sdhjshdk
-      secretKey: dfjdkfj
+      accessKey: thisIsAkindOfFakeKey
+      secretKey: thisIsAkindOfFakeKey2
     region:
       static: ap-northeast-2
     stack:
@@ -37,7 +37,7 @@ spring:
         format_sql: 'true'
     database-platform: org.hibernate.dialect.MySQL8Dialect
 jwt:
-  secret: 4oCYc3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LWhhbmdoYWUtYXNzaWdubWVudC1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3Qtc2VjcmV0LWtleeKAmQo=
+  secret: secret
 logging:
   level:
     org:
